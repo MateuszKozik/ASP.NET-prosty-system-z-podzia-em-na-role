@@ -133,6 +133,47 @@ namespace NowaAplikacja.Controllers
             if (selectedRoleName != null) selectedRoleName.Selected = true;
             return roleNames;
         }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SaveUser(string id, AdminEditViewModel model)
+        {
+            try
+            {
+                AdmUsrRole = model.RankName;
+                AdmUsrName = model.UserName;
+                var userid = context.Users.Where(x => x.UserName == AdmUsrName).Select(x =>
+                x.Id).FirstOrDefault();
+                var user = await UserManager.FindByIdAsync(userid);
+                var userRoles = await UserManager.GetRolesAsync(user.Id);
+                string[] roles = new string[userRoles.Count];
+                userRoles.CopyTo(roles, 0);
+                await UserManager.RemoveFromRolesAsync(user.Id, roles);
+                await UserManager.AddToRoleAsync(user.Id, AdmUsrRole);
+
+                return RedirectToAction("Index", "Admin", new
+                {
+                    Message = ManageMessageId.UserUpdated
+                });
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Admin", new
+                {
+                    Message =
+                ManageMessageId.Error
+                });
+            }
+        }
+
+        public enum ManageMessageId
+        {
+            HighRankedUser,
+            Error,
+            UserDeleted,
+            UserUpdated
+        }
     }
 
 }
