@@ -4,6 +4,9 @@ namespace NowaAplikacja.Migrations
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+
 
     internal sealed class Configuration : DbMigrationsConfiguration<NowaAplikacja.Models.ApplicationDbContext>
     {
@@ -15,10 +18,16 @@ namespace NowaAplikacja.Migrations
 
         protected override void Seed(NowaAplikacja.Models.ApplicationDbContext context)
         {
-            //  This method will be called after migrating to the latest version.
-
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data.
+            var RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            string[] roleNames = { "Admin", "Teacher", "Student" };
+            IdentityResult roleResult;
+            foreach (var roleName in roleNames)
+            {
+                if (!RoleManager.RoleExists(roleName))
+                {
+                    roleResult = RoleManager.Create(new IdentityRole(roleName));
+                }
+            }
         }
     }
 }
