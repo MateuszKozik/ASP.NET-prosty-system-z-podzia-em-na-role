@@ -26,7 +26,7 @@ namespace NowaAplikacja.Controllers
         {
            context = new ApplicationDbContext();
            UserManager = new
-           UserManager<ApplicationUser>(newUserStore<ApplicationUser>(context));
+           UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
         }
 
         [Authorize(Roles = "Admin")]
