@@ -74,11 +74,16 @@ namespace NowaAplikacja.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Index(AdminUserViewModel model)
+        public async Task<ActionResult> Index(AdminUserViewModel model, ManageMessageId? message = null)
         {
+            ViewBag.StatusMessage = message == ManageMessageId.UserDeleted ? " Konto użytkownika zostało pomyślnie usunięte." 
+                : message == ManageMessageId.UserUpdated ? "Konto użytkownika zostało zaaktualizowane.": "";
+            ViewBag.ErrorMessage = message == ManageMessageId.Error ? "Błąd."
+            : message == ManageMessageId.HighRankedUser ? "Admin nie może zostać usunięty." : "";
             await ShowUserDetails(model);
             return View();
         }
+
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
