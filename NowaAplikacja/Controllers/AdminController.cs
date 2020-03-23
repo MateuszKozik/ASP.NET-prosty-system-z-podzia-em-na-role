@@ -24,9 +24,9 @@ namespace NowaAplikacja.Controllers
 
         public AdminController()
         {
-           context = new ApplicationDbContext();
-           UserManager = new
-           UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            context = new ApplicationDbContext();
+            UserManager = new
+            UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
         }
 
         [Authorize(Roles = "Admin")]
@@ -80,5 +80,37 @@ namespace NowaAplikacja.Controllers
             return View();
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public ActionResult EditUser()
+        {
+            return View();
+        }
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditUser(string id, AdminEditViewModel model)
+        {
+            try
+            {
+                var user = UserManager.FindById(id);
+                model.Email = user.Email;
+                var roles = await UserManager.GetRolesAsync(user.Id);
+                model.UserName = user.UserName;
+                foreach (var role in roles)
+                {
+                    model.RankName = role;
+                }
+                AdmUsrName = model.UserName;
+                AdmUsrEmail = model.Email;
+                AdmUsrRole = model.RankName;
+                return RedirectToAction("EditUser");
+            }
+            catch
+            {
+                return View();
+            }
+        }
     }
+    
 }
