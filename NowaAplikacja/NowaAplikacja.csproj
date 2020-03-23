@@ -247,10 +247,14 @@
     <Content Include="Views\Admin\ShowUserDetails.cshtml" />
     <Content Include="Views\Admin\EditUser.cshtml" />
     <Content Include="Views\Admin\DeleteUser.cshtml" />
+    <Content Include="Views\Example\Index.cshtml" />
+    <Content Include="Views\Example\OnlyTeachers.cshtml" />
+    <Content Include="Views\Example\OnlyStudents.cshtml" />
+    <Content Include="Views\Example\OnlyAdmin.cshtml" />
+    <Content Include="Views\Example\StudentsAndTeachers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Example\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
