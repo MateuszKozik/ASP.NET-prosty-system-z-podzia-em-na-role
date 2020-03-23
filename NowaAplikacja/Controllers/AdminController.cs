@@ -182,6 +182,45 @@ namespace NowaAplikacja.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteUser(string userid)
+        {
+            if (AdmUsrRole == "Admin")
+            {
+                return RedirectToAction("Index", "Admin", new
+                {
+                    Message =
+                ManageMessageId.HighRankedUser
+                });
+            }
+            userid = context.Users.Where(x => x.UserName == AdmUsrName).Select(x =>
+            x.Id).FirstOrDefault();
+            var user = await UserManager.FindByIdAsync(userid);
+            var userClaims = await UserManager.GetClaimsAsync(user.Id);
+            var userRoles = await UserManager.GetRolesAsync(user.Id);
+            var userLogins = await UserManager.GetLoginsAsync(user.Id);
+            foreach (var claim in userClaims)
+            {
+                await UserManager.RemoveClaimAsync(user.Id, claim);
+            }
+            string[] roles = new string[userRoles.Count];
+            userRoles.CopyTo(roles, 0);
+            await UserManager.RemoveFromRolesAsync(user.Id, roles);
+            foreach (var log in userLogins)
+            {
+                await UserManager.RemoveLoginAsync(user.Id, new
+                UserLoginInfo(log.LoginProvider, log.ProviderKey));
+            }
+            await UserManager.DeleteAsync(user);
+            return RedirectToAction("Index", "Admin", new
+            {
+                Message =
+            ManageMessageId.UserDeleted
+            });
+        }
     }
 
 }
