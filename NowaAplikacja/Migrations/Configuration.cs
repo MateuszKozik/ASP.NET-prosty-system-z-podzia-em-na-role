@@ -6,6 +6,7 @@ namespace NowaAplikacja.Migrations
     using System.Linq;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
+    using NowaAplikacja.Models;
 
 
     internal sealed class Configuration : DbMigrationsConfiguration<NowaAplikacja.Models.ApplicationDbContext>
@@ -28,6 +29,9 @@ namespace NowaAplikacja.Migrations
                     roleResult = RoleManager.Create(new IdentityRole(roleName));
                 }
             }
+            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            UserManager.AddToRole("736c8001-4213-4980-aca5-e8e97c71816c", "Admin");
+
         }
     }
 }
