@@ -1,0 +1,68 @@
+﻿@model NowaAplikacja.Models.AdminEditViewModel
+@using NowaAplikacja.Controllers
+@{
+    ViewBag.Title = "EditUser";
+}
+<div class="mnghmcont">
+    <div class="mnghmsub">
+        <h1>Edycja użytkownika</h1>
+        @using (Html.BeginForm("SaveUser", "Admin", FormMethod.Post, new
+        {
+            role =
+        "form"
+        }))
+        {
+            @Html.AntiForgeryToken()
+            {
+                var admCtrl = new AdminController();
+                ViewBag.Roles =
+                admCtrl.GetUserRoles(AdminController.AdmUsrRole);
+            }
+            <table>
+                <tr>
+                    <td>@Html.LabelFor(m => m.UserName)</td>
+                    <td>
+                        @Html.TextBoxFor(m => m.UserName, new
+                        {
+                            @class =
+                "form-control",
+                            @readonly = "readonly",
+                            Value = AdminController.AdmUsrName
+                        })
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.RankName)</td>
+                <td>
+                    @Html.DropDownListFor(m => m.RankName,
+            (IEnumerable<SelectListItem>)ViewBag.Roles, new { @class = "form-control" })
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.Email)</td>
+            <td>@Html.TextBoxFor(m => m.Email, new { @class = "formcontrol", @readonly = "readonly", Value = AdminController.AdmUsrEmail })</td>
+        </tr>
+    </table>
+    <input type="submit" value="Zapisz" class="btn btn-success" />
+}
+        @using (Html.BeginForm("DeleteUser", "Admin", FormMethod.Get, new
+        {
+            role =
+        "form"
+        }))
+        {
+            @Html.TextBoxFor(model => model.RankName, new { @class = "formcontrol", @type = "hidden", Value = AdminController.AdmUsrRole })
+            @Html.TextBoxFor(m => m.UserName, new
+            {
+                @class = "form-control",
+                @type
+            = "hidden",
+                @readonly = "readonly",
+                Value = AdminController.AdmUsrName
+            })
+            <input type="submit" value="Usuń" class="btn btn-danger" />
+        }
+        <input type="button" value="Wstecz"
+               onclick="location.href='@Url.Action("Index","Admin")'" class="btn btn-default" />
+    </div>
+</div>
