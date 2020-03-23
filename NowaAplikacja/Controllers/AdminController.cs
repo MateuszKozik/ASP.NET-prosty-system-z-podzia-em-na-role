@@ -174,6 +174,14 @@ namespace NowaAplikacja.Controllers
             UserDeleted,
             UserUpdated
         }
+
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public ActionResult DeleteUser()
+        {
+            return View();
+        }
     }
 
 }

@@ -1,0 +1,25 @@
+﻿@model NowaAplikacja.Models.AdminEditViewModel
+
+@{
+    ViewBag.Title = "DeleteUser";
+}
+<h1>Usuwanie</h1>
+@using (Html.BeginForm("DeleteUser", "Admin", FormMethod.Post, new { @role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <div>Czy na pewno chcesz usunąć wybranego użytkownika?</div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Usuń" class="btn btn-danger" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="button" value="Anuluj"
+                   onclick="location.href='@Url.Action("EditUser","Admin")'" class="btn btn-default"
+                   style="float:left" />
+        </div>
+    </div>
+}
