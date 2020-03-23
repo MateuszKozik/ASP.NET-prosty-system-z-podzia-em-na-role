@@ -14,4 +14,17 @@ namespace NowaAplikacja.Models
         public string RankId { get; set; }
     }
 
+    public class AdminEditViewModel
+    {
+        public string UserName { get; set; }
+        public string RankName { get; set; }
+        public string Email { get; set; }
+    }
+    public class AdminRoleViewModel
+    {
+        public string Role { get; set; }
+        public string RoleId { get; set; }
+        public string RoleValue { get; set; }
+    }
+
 }
