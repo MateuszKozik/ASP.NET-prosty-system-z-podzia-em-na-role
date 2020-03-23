@@ -1,0 +1,41 @@
+﻿@model NowaAplikacja.Models.AdminUserViewModel
+
+@using NowaAplikacja.Controllers
+@using System.Globalization
+<h1> Użytkownicy w systemie</h1>
+@{
+    var totalUsers = AdminController.usrList.ToList().Count();
+    int num = 0;
+}
+<h3>Liczba: @totalUsers</h3>
+<table class="userDetails">
+    <tr>
+        <th class="tblnum">Nr</th>
+        <th>Nazwa</th>
+        <th>Ranga</th>
+        <th>Opcje</th>
+    </tr>
+    @foreach (var usr in AdminController.usrList)
+    {
+        ViewBag.UserName =
+        CultureInfo.CurrentCulture.TextInfo.ToTitleCase(usr.UserName);
+        ViewBag.UserFullName =
+        CultureInfo.CurrentCulture.TextInfo.ToTitleCase(usr.UserFullName);
+        num++;
+        <tr>
+            <td class="tblnum">@num</td>
+            <td title="@ViewBag.UserFullName">@ViewBag.UserName</td>
+            <td>@usr.RankName</td>
+            <td>
+                @using (Html.BeginForm("EditUser", "Admin",
+                FormMethod.Post, new { @role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@usr.UserId" />
+                    <input type="submit" class="btn-default"
+                           value="Edytuj" />
+                }
+            </td>
+        </tr>
+    }
+</table>
