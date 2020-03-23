@@ -111,6 +111,28 @@ namespace NowaAplikacja.Controllers
                 return View();
             }
         }
+
+        public IEnumerable<SelectListItem> GetUserRoles(string usrrole)
+        {
+            var roles = context.Roles.OrderBy(x => x.Name).ToList();
+            List<AdminRoleViewModel> rList = new List<AdminRoleViewModel>();
+            rList.Add(new AdminRoleViewModel() { Role = "Admin", RoleId = "1" });
+            rList.Add(new AdminRoleViewModel() { Role = "Teacher", RoleId = "2" });
+            rList.Add(new AdminRoleViewModel() { Role = "Student", RoleId = "3" });
+            rList = rList.OrderBy(x => x.RoleId).ToList();
+            List<SelectListItem> roleNames = new List<SelectListItem>();
+            foreach (var role in rList)
+            {
+                roleNames.Add(new SelectListItem()
+                {
+                    Text = role.Role,
+                    Value = role.Role
+                });
+            }
+            var selectedRoleName = roleNames.FirstOrDefault(d => d.Value == usrrole);
+            if (selectedRoleName != null) selectedRoleName.Selected = true;
+            return roleNames;
+        }
     }
-    
+
 }
